@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>gaussian_mapping</name>
+  <version>0.1.0</version>
+  <description>ROS Gaussian mapping prototype based on Photo-SLAM.</description>
+  <maintainer email="HITZY2002@users.noreply.github.com">HITZY2002</maintainer>
+  <license>GPL-3.0-or-later</license>
+  <license>LicenseRef-Gaussian-Splatting</license>
+  <license>MIT</license>
+  <license>LicenseRef-tinyply</license>
+  <url type="repository">https://github.com/HITZY2002/viwgs</url>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>tf</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>libeigen3-dev</depend>
+  <depend>libjsoncpp-dev</depend>
+  <depend>libglm-dev</depend>
+  <exec_depend>vins</exec_depend>
+  <export/>
+</package>

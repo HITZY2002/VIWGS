@@ -1,0 +1,7 @@
+<launch>
+  <arg name="config_path" default="$(find vins)/config/realsense_d435i/realsense_stereo_imu_config_ridgeback.yaml"/>
+  <arg name="output_dir" default="$(env HOME)/.ros/viwgs/vins"/>
+  <node name="vins_estimator" pkg="vins" type="viwo_node" args="$(arg config_path)" output="screen">
+    <param name="output_path" value="$(arg output_dir)"/>
+  </node>
+</launch>

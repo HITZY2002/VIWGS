@@ -1,0 +1,23 @@
+<launch>
+  <arg name="config_path" default="$(find vins)/config/euroc/euroc_stereo_imu_config.yaml"/>
+  <arg name="frontend_node" default="vins_node"/>
+  <arg name="gaussian_config" default="$(find gaussian_mapping)/config/gaussian_all.yaml"/>
+  <arg name="mapping_config" default="$(find gaussian_mapping)/config/gaussian_mapping.yaml"/>
+  <arg name="output_dir" default="$(env HOME)/.ros/viwgs"/>
+  <arg name="enable_viewer" default="false"/>
+  <arg name="depth_fusion_enable" default="false"/>
+  <arg name="depth_model" default=""/>
+  <arg name="use_sim_time" default="true"/>
+  <param name="/use_sim_time" value="$(arg use_sim_time)"/>
+  <node name="vins_estimator" pkg="vins" type="$(arg frontend_node)" args="$(arg config_path)" output="screen" required="true">
+    <param name="output_path" value="$(arg output_dir)/vins"/>
+  </node>
+  <include file="$(find gaussian_mapping)/launch/gaussian_mapping.launch">
+    <arg name="gaussian_config" value="$(arg gaussian_config)"/>
+    <arg name="mapping_config" value="$(arg mapping_config)"/>
+    <arg name="output_dir" value="$(arg output_dir)/3dgs"/>
+    <arg name="enable_viewer" value="$(arg enable_viewer)"/>
+    <arg name="depth_fusion_enable" value="$(arg depth_fusion_enable)"/>
+    <arg name="depth_model" value="$(arg depth_model)"/>
+  </include>
+</launch>

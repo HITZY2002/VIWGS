@@ -1,0 +1,120 @@
+%YAML:1.0
+---
+# Algorithm settings for the minimal online pipeline.
+# dist_coeffs must match the camera in mapping_config and the frontend calibration.
+dist_coeffs: [-0.2954564510698775, 0.08662321564018617, 0.0000020132892276082517, 0.000013924531371276508]
+
+Model.sh_degree: 3 # maximum  # 球谐函数阶数上限
+Model.resolution: -1.0  # 训练分辨率(-1表示原始分辨率)
+Model.white_background: 0  # 0:false, 1 or other integer:true  # 是否使用白色背景
+Model.eval: 0  # 0:false, 1 or other integer:true  # 是否评估模式
+
+Camera.z_near: 0.01  # 近裁剪面
+Camera.z_far: 100.0  # 远裁剪面(室内建议收紧，减少远距离伪点影响)
+Monocular.inactive_geo_densify_max_pixel_dist: 0.0 # (squared distance)  # 单目非活跃区域密度化像素距离阈值
+Stereo.min_disparity: 8  # 双目最小视差
+Stereo.num_disparity: 128  # 双目视差范围
+RGBD.min_depth: 0.0000000001  # RGB-D最小深度
+RGBD.max_depth: 8.0  # RGB-D最大深度(室内数据建议收紧)
+Mapper.inactive_geo_densify: 1  # 0:false, 1 or other integer:true  # 是否进行非活跃区域密度化
+Mapper.depth_cache: 10  # 深度缓存帧数(触发一次增量)
+Mapper.min_num_initial_map_kfs: 10  # 初始化建图所需关键帧数
+Mapper.new_keyframe_times_of_use: 4  # 新关键帧训练使用次数
+Mapper.old_keyframe_times_of_use: 2  # 老关键帧补充使用次数（当滑窗关键帧都用尽时）
+Mapper.local_BA_increased_times_of_use: 2  # 局部BA后额外使用次数
+Mapper.loop_closure_increased_times_of_use_: 2  # 回环后额外使用次数
+Mapper.cull_keyframes: 0  # 0:false, 1 or other integer:true  # 是否剔除关键帧
+Mapper.large_rotation_threshold: 15.0 #10.0 #  # 大旋转阈值(度)
+Mapper.large_translation_threshold: 0.5 #0.1 #  # 大平移阈值(米)
+Mapper.stable_num_iter_existence: 1  # 稳定存在迭代数
+Mapper.enable_incremental_pcd: 1  # 是否开启增量点云
+Mapper.do_initial_sfm_refine: 1   # 初始训练前对缓存关键帧做一次SfM位姿精修
+Mapper.initial_sfm_min_inliers: 50 # 相邻帧SfM最少内点阈值
+Params.keep_training: 1
+Pipeline.convert_SHs: 0  # 0:false, 1 or other integer:true  # 是否转换SH
+Pipeline.compute_cov3D: 0  # 0:false, 1 or other integer:true  # 是否计算3D协方差
+
+GausPyramid.do: 1  # 0:false, 1 or other integer:true  # 是否使用高斯金字塔训练
+GausPyramid.num_sub_levels: 3  # 金字塔子层级数
+GausPyramid.sub_level_times_of_use: 8  # 每层使用次数
+
+Record.keyframe_record_interval: 0 # 0:never, 1:always, others:periodically  # 单帧渲染记录间隔
+Record.all_keyframes_record_interval: 0 # 0:never, 1:always, others:periodically  # 全关键帧渲染记录间隔
+Record.record_rendered_image: 1 # 0:false, 1 or other integer:true  # 是否保存渲染图
+Record.record_ground_truth_image: 1 # 0:false, 1 or other integer:true  # 是否保存GT图
+Record.record_loss_image: 0 # 0:false, 1 or other integer:true  # 是否保存loss图
+Record.training_report_interval: 1 # 0:never, 1:always, others:periodically  # 训练日志输出间隔
+Record.record_loop_ply: 0 # 0:false, 1 or other integer:true  # 回环时是否保存PLY
+Record.save_colmap: 0  # 是否导出COLMAP格式
+Record.colmap_dir: ""  # empty: derive from output_dir
+
+Optimization.max_num_iterations: 10000  # 最大迭代次数
+Optimization.position_lr_init: 0.00016 #0.00016  # 位置学习率初始值
+Optimization.position_lr_final: 0.00005  # 位置学习率最终值
+Optimization.position_lr_delay_mult: 0.01  # 位置学习率延迟倍率
+Optimization.position_lr_max_steps: 24  # 位置学习率最大步数
+Optimization.feature_lr: 0.0040  # 特征学习率
+Optimization.opacity_lr: 0.05 #0.05  # 不透明度学习率
+Optimization.scaling_lr: 0.002 #0.005  # 缩放学习率(降低大尺度膨胀风险)
+Optimization.rotation_lr: 0.001 #0.001  # 旋转学习率
+Optimization.percent_dense: 0.02  # 密度化百分比
+Optimization.lambda_dssim: 0.2  # SSIM权重
+Optimization.densification_interval: 150  # 密度化间隔(放缓增殖，降低离群点风险)
+Optimization.opacity_reset_interval: 300  # 0:never, 1:always, others:periodically  # 不透明度重置间隔
+Optimization.prune_big_point_after_iter: 8000  # 大点剪枝起始迭代（更早抑制大点爆发）
+Optimization.densify_min_opacity: 0.002 #0.005  # 密度化最小不透明度s
+Optimization.densify_from_iter_: 100  # 密度化开始迭代
+Optimization.densify_until_iter: 10000  # 密度化结束迭代
+Optimization.densify_grad_threshold: 0.00030  # 密度化梯度阈值（提高阈值以放缓densify）
+Optimization.enable_safety_prune: 1  # 全程安全剪枝（即使过了densify阶段也持续清理离群大点）
+Optimization.safety_prune_interval: 1000  # 安全剪枝间隔（迭代）
+Optimization.safety_prune_max_world_scale_ratio: 100  # 单高斯最大世界尺度阈值（相对场景尺度）
+Optimization.safety_prune_max_center_dist_ratio: 100  # 点到场景中心最大距离阈值（相对场景尺度）
+Optimization.lambda_isotropic_scaling: 0.00005  # 各向同性正则，抑制针状/面片状高斯
+Optimization.lambda_isotropic_scaling_new_point_iters: 50  # 仅对新点前N次迭代施加各向同性约束
+Optimization.lambda_isotropic_scaling_min_ratio: 0.001  # 训练后期最小保留比例
+Optimization.lambda_isotropic_scaling_progress_power: 1  # 随迭代进度衰减指数
+Optimization.lambda_isotropic_scaling_loss_power: 0  # 随EMA loss下降衰减指数
+Optimization.multiview_old_frame_samples: 5  # 每次训练随机采样历史老帧数量（用于多视角维持）
+Optimization.multiview_old_frame_loss_weight: 0.15  # 历史老帧损失权重(降低错误约束导致的形变风险)
+Optimization.multiview_old_gaussian_min_age_iters: 200  # 判定老高斯的最小年龄
+
+# ---- 滑动窗口主动位姿优化（PoseOpt）----
+# 在 3DGS 渲染侧对最近 N 帧位姿做光度一致性优化。
+# 梯度路径：渲染图像 L1 损失 → dL/d_means_cam → dL/dR_cw, dL/dt_cw
+# 优化结果吸收回各帧 Eigen 位姿，不影响 Gaussian 模型优化器。
+PoseOpt.enable: 1             # 1=启用, 0=关闭
+PoseOpt.window_size: 4       # 满4帧触发一次位姿优化
+PoseOpt.slide_size: 2        # 每次优化后移除前2帧
+PoseOpt.anchor_size: 2         # 每次优化时前2帧为死锚点（不参与优化）
+PoseOpt.batch_ratio: 1      # 每步随机抽样可优化关键帧参与loss和梯度
+PoseOpt.steps_per_call: 10     # 每次触发时 Adam 步数
+PoseOpt.lr: 0.0003            # delta_xi 的 Adam 学习率（保守）
+PoseOpt.call_interval: 0      # 关闭按迭代触发（采用“满窗口触发”）
+PoseOpt.min_iteration: 3000      # 训练迭代达到该值后才允许触发位姿优化
+PoseOpt.trigger_on_new_keyframe: 1 # 新关键帧到来时检查是否满窗口
+PoseOpt.steps_on_new_keyframe: 10   # 满窗口触发时的优化步数
+PoseOpt.lambda_ssim: 0.2     # 位姿优化中 SSIM 权重
+PoseOpt.rot_reg_weight: 0.001 # 旋转增量正则
+PoseOpt.trans_reg_weight: 0.005 # 平移增量正则
+PoseOpt.max_grad_norm: 0.05   # delta_xi 梯度裁剪阈值
+PoseOpt.max_chunks_per_loop: 1   # 每次mapping主循环最多完成的PoseOpt chunk数
+PoseOpt.max_steps_per_loop: 2    # 每次mapping主循环最多执行的PoseOpt step数
+PoseOpt.max_millis_per_loop: 8   # 每次mapping主循环用于PoseOpt的毫秒预算
+PoseOpt.task_queue_limit: 2      # PoseOpt任务队列上限（积压时丢旧任务）
+PoseOpt.skip_when_new_keyframe_pending: 1  # 连续新关键帧场景下不完全跳过，避免任务长期饥饿
+PoseOpt.busy_loop_ms_soft: 60    # mapping循环耗时软阈值（超过则降级）
+PoseOpt.busy_loop_ms_hard: 120   # mapping循环耗时硬阈值（超过则跳过）
+PoseOpt.busy_batch_ratio_scale: 0.5 # 繁忙时batch_ratio缩放
+PoseOpt.absorb_rot_min_deg: 0.02 # absorb最小旋转写回阈值（度）
+PoseOpt.absorb_trans_min: 0.00001 # absorb最小平移写回阈值（米）
+PoseOpt.max_optimized_fids_per_absorb: 8 # 每轮吸收最多写回帧数（按变化量排序）
+PoseOpt.extra_train_budget_per_round: 3 # 每轮PoseOpt额外训练使用次数总预算
+PoseOpt.cache_downsample: 2      # PoseOpt缓存降采样倍率（1/2/4）
+PoseOpt.use_lowres_cache: 1      # PoseOpt默认使用低分辨率缓存计算loss
+
+GaussianViewer.glfw_window_width: 1400  # Viewer窗口宽度
+GaussianViewer.glfw_window_height: 1000  # Viewer窗口高度
+GaussianViewer.image_scale: 0.5  # Viewer子视图缩放
+GaussianViewer.image_scale_main: 1.0  # Viewer主视图缩放
+

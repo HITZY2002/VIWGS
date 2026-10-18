@@ -1,0 +1,17 @@
+VIWGS contains source files under different upstream licenses.
+
+Repository-original integration changes, build scripts and documentation are
+provided under GPL-3.0-or-later (licenses/GPL-3.0.txt). This grant does not
+relicense third-party sources or override inherited terms.
+
+- VIW-Fusion/VINS-Fusion-derived frontend files and GPL-marked Photo-SLAM files:
+  see licenses/GPL-3.0.txt and the notices in each file.
+- Gaussian Splatting-derived mapping, rasterization and simple-knn files:
+  see licenses/Gaussian-Splatting.md (research/evaluation and non-commercial restrictions).
+- Dear ImGui: src/gaussian_mapping/src/viewer/imgui/LICENSE.txt.
+- tinyply: the public-domain dedication and fallback permission in its file headers.
+
+The original copyright and license notices remain authoritative for each file.
+This notice does not grant a new license over third-party work or resolve the
+compatibility of the combined GPL and Gaussian Splatting components.
+See THIRD_PARTY.md for provenance and the outstanding combined-distribution issue.

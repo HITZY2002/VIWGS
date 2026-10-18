@@ -1,0 +1,77 @@
+# EuRoC cam0 pinhole calibration; replace together with frontend and algorithm YAML for other cameras.
+min_keyframes_to_start: 5
+fx: 461.15862106007575
+fy: 459.75286598073296
+cx: 362.65929181685937
+cy: 248.52105668448124
+
+alignment_debug: false
+alignment_debug_interval: 30
+undistort_keyframes: false
+dist_coeffs: [-0.2954564510698775, 0.08662321564018617, 0.0000020132892276082517, 0.000013924531371276508]
+image_width: 752
+image_height: 480
+# ROS 话题配置
+topic_keyframe_pose:  "/vins_estimator/keyframe_pose"
+topic_keyframe_image: "/vins_estimator/keyframe_image"
+# 若你的彩色相机原始话题不同（如 /camera/color/image_raw），请改成对应RGB话题
+topic_keyframe_point: "/vins_estimator/keyframe_point"
+
+# 组装时间对齐阈值（秒）：关键帧图像/点云与位姿时间戳匹配容差
+sync_time_threshold: 0.003
+max_buffer_size: 500
+
+# ROSDataProvider 其他参数
+point_min_range: 0.01  # 点云最小距离过滤(米)
+point_max_range: 20.0  # 点云最大距离过滤(米, 室内建议收紧)
+pointcloud_in_camera_frame: false  # 点云是否在相机系(需要转换到世界系)W
+pose_is_Tcw: false  # 位姿消息是否为T_cw(false表示T_wc)
+
+scale_check_window: 10  # 尺度稳定窗口长度(帧)
+scale_std_ratio_th: 0.3  # 尺度稳定std/mean阈值
+scale_jump_ratio_th: 2.0  # 尺度突变max/mean阈值
+scale_min_translation: 0.01  # 尺度统计最小平移阈值(米)
+scale_debug: false  # 是否输出尺度调试日志
+scale_debug_interval: 30  # 尺度调试输出间隔(帧)
+
+drop_first_keyframes: 1  # 丢弃前N帧关键帧数据
+max_keyframes_in_memory: 300  # ROSDataProvider内存关键帧上限（防止中途堆积导致早帧被覆盖）
+
+# ---- 尺度稳定性检查（可选）----
+# enable_scale_check: true 时，要求 scale_stable_ 为 true 才触发初始化
+# 设为 false 则帧数达到 min_keyframes_to_start 即可初始化，适用于室内短程或已知尺度场景
+enable_scale_check: false
+
+# ---- 关键帧质量筛选（可选）----
+# enable_kf_laplacian_filter: 模糊检测开关（true=丢弃模糊帧）
+enable_kf_laplacian_filter: true
+laplacian_threshold: 60.0  # 拉普拉斯方差阈值，低于此值视为模糊帧
+
+# enable_kf_pose_filter: 最小平移/旋转筛选开关（true=丢弃运动过小的冗余帧）
+enable_kf_pose_filter: true
+kf_min_translation: 0.01   # 与上一接收帧的最小平移距离（米），低于则丢弃
+kf_min_rotation_deg: 0.1   # 与上一接收帧的最小旋转角（度），低于则丢弃
+
+# ---- DepthAnythingV2 补点（高性能 C++ 路径）----
+depth_fusion_enable: false
+depth_anything_model_path: ""
+depth_anything_output_type: "inverse_depth"   # inverse_depth | depth
+depth_anything_input_size: 518
+depth_anything_device: "cuda"   # cuda | cuda_fp16 | cpu
+depth_fusion_target_points_per_kf: 4000
+depth_fusion_max_new_points: 6500
+depth_fusion_min_sparse_matches: 20                 # 兼容旧参数；未显式设置新阈值时作为 trust 阈值默认值
+depth_fusion_scale_trust_min_sparse_matches: 20     # 内点 >= 此值：完全信任当前帧尺度（允许尺度突变）
+depth_fusion_scale_ema_fallback_min_sparse_matches: 8  # 内点 < 此值：才启用 EMA 兜底
+depth_fusion_min_depth: 0.01
+depth_fusion_max_depth: 20.0
+depth_fusion_edge_grad_threshold: 0.05   # OpenCV梯度阈值(米/像素)，大于该值视为深度边缘并拒绝补点
+depth_fusion_scale_ema_enable: true      # 对每帧估计尺度做时间低通，抑制帧间跳变
+depth_fusion_scale_ema_alpha: 0.2       # EMA系数(0,1]，越小越平滑、越慢响应
+depth_fusion_debug_log: false
+depth_fusion_async_enable: true          # true: 补点异步后台执行，主线程先训练
+depth_fusion_every_n_keyframes: 1        # 每 N 帧做一次补点，减轻推理开销
+depth_fusion_async_max_queue: 8          # 异步补点任务队列上限
+
+
+

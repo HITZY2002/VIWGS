@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>camera_models</name>
+  <version>0.1.0</version>
+  <description>Camera models inherited from VIW-Fusion/VINS-Fusion.</description>
+  <maintainer email="HITZY2002@users.noreply.github.com">HITZY2002</maintainer>
+  <license>GPL-3.0-only</license>
+  <url type="repository">https://github.com/HITZY2002/viwgs</url>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>libceres-dev</depend>
+  <depend>libopencv-dev</depend>
+  <depend>libboost-all-dev</depend>
+  <export/>
+</package>

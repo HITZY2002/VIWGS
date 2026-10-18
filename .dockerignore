@@ -1,0 +1,9 @@
+.git
+build
+devel
+install
+output
+*.bag
+*.onnx
+*.pt
+*.pth

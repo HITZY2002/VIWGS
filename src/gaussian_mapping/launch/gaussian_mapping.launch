@@ -1,0 +1,16 @@
+<launch>
+  <arg name="gaussian_config" default="$(find gaussian_mapping)/config/gaussian_all.yaml"/>
+  <arg name="mapping_config" default="$(find gaussian_mapping)/config/gaussian_mapping.yaml"/>
+  <arg name="output_dir" default="$(env HOME)/.ros/viwgs/3dgs"/>
+  <arg name="enable_viewer" default="false"/>
+  <arg name="depth_fusion_enable" default="false"/>
+  <arg name="depth_model" default=""/>
+  <node name="gaussian_mapping" pkg="gaussian_mapping" type="gaussian_mapping_node" output="screen" required="true">
+    <rosparam file="$(arg mapping_config)" command="load"/>
+    <param name="gaussian_config_file" value="$(arg gaussian_config)"/>
+    <param name="output_dir" value="$(arg output_dir)"/>
+    <param name="enable_viewer" value="$(arg enable_viewer)"/>
+    <param name="depth_fusion_enable" value="$(arg depth_fusion_enable)"/>
+    <param name="depth_anything_model_path" value="$(arg depth_model)"/>
+  </node>
+</launch>

@@ -1,0 +1,28 @@
+# Build and runtime output
+/build/
+/devel/
+/install/
+/logs/
+/output/
+.catkin_tools/
+CMakeCache.txt
+CMakeFiles/
+compile_commands.json
+# Download dependencies and recordings outside the source tree.
+*.bag
+*.onnx
+*.pt
+*.pth
+*.so
+*.so.*
+# Editor and local files
+.vscode/
+.idea/
+.DS_Store
+__pycache__/
+*.py[cod]
+*.swp
+*.log
+
+# Source release archives
+/dist/
